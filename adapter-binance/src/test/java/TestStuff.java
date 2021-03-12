@@ -1,9 +1,7 @@
 import com.binance.api.client.BinanceApiClientFactory;
 import com.binance.api.client.BinanceApiWebSocketClient;
 import com.binance.api.client.domain.market.CandlestickInterval;
-import de.y3om11.algotrader.domain.entity.CandlestickSeries;
-import de.y3om11.algotrader.domain.entity.CandlestickSeriesBuilder;
-import de.y3om11.algotrader.domain.entity.Timeframe;
+import de.y3om11.algotrader.domain.entity.*;
 import org.junit.jupiter.api.Test;
 import org.nd4j.linalg.factory.Nd4j;
 import java.util.HashMap;
@@ -26,9 +24,12 @@ public class TestStuff {
                     double high = Double.parseDouble(response.getHigh());
                     double low = Double.parseDouble(response.getLow());
                     double volume = Double.parseDouble(response.getVolume());
-                    double time = response.getOpenTime();
+                    double time = response.getOpenTime().doubleValue();
                     double[] vectorDouble = new double[]{open, close, high, low, volume, time};
-                    testee.addCandlestick(response.getOpenTime(), Nd4j.create(vectorDouble, 6, 1));
+                    final Candlestick candleStick = new CandleStickBuilder()
+                            .withValue(Nd4j.create(vectorDouble, 6, 1))
+                            .build();
+                    testee.addCandlestick(candleStick);
                 }
           });
         }

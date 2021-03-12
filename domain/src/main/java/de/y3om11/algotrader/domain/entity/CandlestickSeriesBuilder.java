@@ -1,16 +1,13 @@
 package de.y3om11.algotrader.domain.entity;
 
-import org.nd4j.linalg.api.ndarray.INDArray;
-
-import java.util.List;
 import java.util.Map;
 
 public class CandlestickSeriesBuilder {
 
-    Map<Long, INDArray> candleSticks;
+    Map<Long, Candlestick> candleSticks;
     Timeframe timeframe;
 
-    public CandlestickSeriesBuilder withCandleSticks(Map<Long, INDArray> candleSticks){
+    public CandlestickSeriesBuilder withCandleSticks(Map<Long, Candlestick> candleSticks){
         this.candleSticks = candleSticks;
         return this;
     }
