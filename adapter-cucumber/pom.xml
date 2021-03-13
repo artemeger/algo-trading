@@ -15,6 +15,11 @@
         <cucumber.version>6.9.1</cucumber.version>
     </properties>
     <dependencies>
+        <dependency>
+            <groupId>de.y3om11.algotrading</groupId>
+            <artifactId>application</artifactId>
+            <version>${parent.version}</version>
+        </dependency>
         <!-- Test Scope -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

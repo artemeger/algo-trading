@@ -13,10 +13,8 @@ public class CandlestickSeries {
     }
 
     public void addCandlestick(final Candlestick candlestick){
-        if(!candleSticks.containsKey(candlestick.getOpenTime())) {
-            candleSticks.put(candlestick.getOpenTime(), candlestick);
-            System.out.println(candlestick);
-        }
+        candleSticks.put(candlestick.getOpenTime(), candlestick);
+        System.out.println(candlestick);
     }
 
     public Map<Long, Candlestick> getAllCandlesticks(){

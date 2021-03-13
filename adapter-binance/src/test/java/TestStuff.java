@@ -14,24 +14,21 @@ public class TestStuff {
                 .withTimeframe(Timeframe.ONE_MINUTE)
                 .withCandleSticks(new HashMap<>())
                 .build();
-        while (true) {
             BinanceApiWebSocketClient client = BinanceApiClientFactory.newInstance().newWebSocketClient();
             // Obtain 1m candlesticks in real-time for ETH/BTC
             client.onCandlestickEvent("ethbtc", CandlestickInterval.ONE_MINUTE, response -> {
-                if(response.getBarFinal()) {
-                    double open = Double.parseDouble(response.getOpen());
-                    double close = Double.parseDouble(response.getClose());
-                    double high = Double.parseDouble(response.getHigh());
-                    double low = Double.parseDouble(response.getLow());
-                    double volume = Double.parseDouble(response.getVolume());
-                    double time = response.getOpenTime().doubleValue();
-                    double[] vectorDouble = new double[]{open, close, high, low, volume, time};
-                    final Candlestick candleStick = new CandleStickBuilder()
-                            .withValue(Nd4j.create(vectorDouble, 6, 1))
-                            .build();
-                    testee.addCandlestick(candleStick);
-                }
+                double open = Double.parseDouble(response.getOpen());
+                double close = Double.parseDouble(response.getClose());
+                double high = Double.parseDouble(response.getHigh());
+                double low = Double.parseDouble(response.getLow());
+                double volume = Double.parseDouble(response.getVolume());
+                double time = response.getOpenTime().doubleValue();
+                double[] vectorDouble = new double[]{open, close, high, low, volume, time};
+                final Candlestick candleStick = new CandleStickBuilder()
+                        .withValue(Nd4j.create(vectorDouble, 6, 1))
+                        .build();
+                testee.addCandlestick(candleStick);
           });
-        }
+        while (true);
     }
 }

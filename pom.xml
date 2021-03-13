@@ -12,6 +12,7 @@
         <module>adapter-binance</module>
         <module>adapter-cucumber</module>
         <module>adapter-persistence</module>
+        <module>application</module>
     </modules>
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
@@ -42,7 +43,6 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>com.adelean</groupId>
             <artifactId>inject-resources-core</artifactId>
