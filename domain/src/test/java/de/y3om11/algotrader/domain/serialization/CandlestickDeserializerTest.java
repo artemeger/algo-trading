@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -37,6 +38,7 @@ class CandlestickDeserializerTest {
         assertEquals(1615553340000L, result.getOpenTime());
         assertEquals(0.031412, result.getOpen());
         assertEquals(123.347, result.getVolume());
+        assertEquals(12, result.getNumberOfTrades());
         assertEquals(result, resultFromString);
     }
 
@@ -49,6 +51,6 @@ class CandlestickDeserializerTest {
                         .collect(Collectors.toMap(Candlestick::getOpenTime, candleStick -> candleStick)))
                 .withTimeframe(Timeframe.ONE_MINUTE)
                 .build();
-        System.out.println(result);
+        assertEquals(2, candlestickSeries.getAllCandlesticks().values().size());
     }
 }

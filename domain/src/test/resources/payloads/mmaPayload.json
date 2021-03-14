@@ -1,0 +1,12 @@
+[{"openTime":1615553340000,"open":64.75,"close":64.75,"high":64.75,"low":64.75,"volume":123.347,"numberOfTrades":12},
+  {"openTime":1615553400000,"open":64.75,"close":63.79,"high":63.79,"low":63.79,"volume":125.347,"numberOfTrades":15},
+  {"openTime":1615553460000,"open":63.79,"close":63.73,"high":63.73,"low":63.73,"volume":123.347,"numberOfTrades":12},
+  {"openTime":1615553520000,"open":63.73,"close":63.73,"high":63.73,"low":63.73,"volume":125.347,"numberOfTrades":15},
+  {"openTime":1615553580000,"open":63.73,"close":63.55,"high":63.55,"low":63.55,"volume":123.347,"numberOfTrades":12},
+  {"openTime":1615553640000,"open":63.55,"close":63.19,"high":63.19,"low":63.19,"volume":125.347,"numberOfTrades":15},
+  {"openTime":1615553700000,"open":63.19,"close":63.91,"high":63.91,"low":63.91,"volume":123.347,"numberOfTrades":12},
+  {"openTime":1615553760000,"open":63.91,"close":63.85,"high":63.85,"low":63.85,"volume":125.347,"numberOfTrades":15},
+  {"openTime":1615553820000,"open":63.85,"close":62.95,"high":62.95,"low":62.95,"volume":125.347,"numberOfTrades":12},
+  {"openTime":1615553880000,"open":62.95,"close":63.37,"high":63.37,"low":63.37,"volume":125.347,"numberOfTrades":15},
+  {"openTime":1615553940000,"open":63.37,"close":61.33,"high":61.33,"low":61.33,"volume":123.347,"numberOfTrades":12},
+  {"openTime":1615554000000,"open":61.33,"close":61.51,"high":61.51,"low":61.51,"volume":125.347,"numberOfTrades":15}]

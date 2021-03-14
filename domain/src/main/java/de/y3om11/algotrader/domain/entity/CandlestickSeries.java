@@ -17,6 +17,10 @@ public class CandlestickSeries {
         System.out.println(candlestick);
     }
 
+    public Candlestick getCandlestick(final long timestamp){
+        return candleSticks.get(timestamp);
+    }
+
     public Map<Long, Candlestick> getAllCandlesticks(){
         return candleSticks;
     }
