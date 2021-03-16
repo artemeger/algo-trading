@@ -1,6 +1,6 @@
 package de.y3om11.algotrading.adapter.serialization;
 
-import de.y3om11.algotrader.domain.gateway.BarSeriesProducer;
+import de.y3om11.algotrader.domain.gateway.BarSeriesSerializer;
 import org.ta4j.core.*;
 
 import java.io.IOException;
@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-public class BarSeriesProducerImpl implements BarSeriesProducer {
+public class BarSeriesSerializerImpl implements BarSeriesSerializer {
 
     private final GenericJsonSerializer jsonSerializer = new GenericJsonSerializer();
 

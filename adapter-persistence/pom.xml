@@ -19,7 +19,7 @@
     <dependencies>
         <dependency>
             <groupId>de.y3om11.algotrading</groupId>
-            <artifactId>application</artifactId>
+            <artifactId>domain</artifactId>
             <version>${parent.version}</version>
         </dependency>
     </dependencies>

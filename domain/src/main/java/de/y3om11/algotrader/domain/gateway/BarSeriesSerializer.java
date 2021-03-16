@@ -4,7 +4,7 @@ import org.ta4j.core.BarSeries;
 
 import java.util.Optional;
 
-public interface BarSeriesProducer {
+public interface BarSeriesSerializer {
 
     Optional<BarSeries> getBarSeriesFromJson(String jsonString);
 }
