@@ -20,6 +20,11 @@
             <artifactId>domain</artifactId>
             <version>${parent.version}</version>
         </dependency>
+        <dependency>
+            <groupId>de.y3om11.algotrading</groupId>
+            <artifactId>adapter-serialization</artifactId>
+            <version>${parent.version}</version>
+        </dependency>
         <!-- Test Scope -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

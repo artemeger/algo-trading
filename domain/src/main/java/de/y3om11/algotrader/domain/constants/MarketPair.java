@@ -8,6 +8,6 @@ public enum MarketPair {
     LTC_BTC,
     BNB_BTC,
     NEO_BTC,
-    ETH_USDT,
-    BTC_USDT
+    BTC_USDT,
+    ETH_USDT
 }
