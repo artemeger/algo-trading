@@ -15,16 +15,31 @@ public class InputDataStepdefs extends SpringContextTest implements En {
     private TestDataBuilder testDataBuilder;
 
     public InputDataStepdefs(){
-        Given("Some test data {string} was configured", (final String testdata) -> {
-            System.out.println("here");
-        });
-
         Given("Candlesticks for Market {word} from {string} to {string}",
                 (final String marketString, final String fromString, final String toString) -> {
                     final TestMarkets market = TestMarkets.valueOf(marketString);
                     final long fromDate = getLongFromDateString(fromString);
                     final long toDate = getLongFromDateString(toString);
             testDataBuilder.setBarSeriesFromPath(market, fromDate, toDate);
+        });
+
+        Given("^we take the close price$", () -> {
+            testDataBuilder.setPriceIndicatorToClosePrice();
+        });
+
+        Given("we use a SMA Indicator with range {int}", (final Integer range) -> {
+            testDataBuilder.setPriceIndicatorToSMAIndicator(range);
+        });
+
+        Given("^we enter the market when the Indicator is down$", () -> {
+            testDataBuilder.setEntryRuleToUnderIndicatorRule();
+        });
+
+        Given("^we exit the market when the Indicator is up$", () -> {
+            testDataBuilder.setExitRuleToOverIndicatorRule();
+        });
+        Given("^we create this Strategy$", () -> {
+            testDataBuilder.createStrategy();
         });
     }
 
