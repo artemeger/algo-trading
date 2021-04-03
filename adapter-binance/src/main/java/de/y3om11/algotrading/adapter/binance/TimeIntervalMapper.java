@@ -9,13 +9,9 @@ import static java.lang.String.format;
 public final class TimeIntervalMapper {
 
     public static CandlestickInterval map(final TimeInterval timeInterval){
-        switch (timeInterval){
-            case ONE_MINUTE:
-                return CandlestickInterval.ONE_MINUTE;
-            case FIVE_MINUTE:
-                return CandlestickInterval.FIVE_MINUTES;
-            default:
-                throw new AlgotradingTechnicalException(format("No mapping for time interval %s found.", timeInterval.name()));
-        }
+        return switch (timeInterval) {
+            case ONE_MINUTE -> CandlestickInterval.ONE_MINUTE;
+            case FIVE_MINUTE -> CandlestickInterval.FIVE_MINUTES;
+        };
     }
 }

@@ -26,10 +26,13 @@
         </repository>
     </repositories>
     <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
-        <spring.version>2.2.6.RELEASE</spring.version>
+        <maven.compiler.source>15</maven.compiler.source>
+        <maven.compiler.target>15</maven.compiler.target>
+        <spring.version>2.4.4</spring.version>
         <junit.version>5.6.2</junit.version>
+        <inject.resources.version>0.1.0</inject.resources.version>
+        <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
+        <maven.surefire.plugin.version>3.0.0-M5</maven.surefire.plugin.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -47,6 +50,21 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>${maven.compiler.plugin.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>${maven.surefire.plugin.version}</version>
+        </dependency>
         <!-- TestStuff Scope -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -57,13 +75,13 @@
         <dependency>
             <groupId>com.adelean</groupId>
             <artifactId>inject-resources-core</artifactId>
-            <version>0.1.0</version>
+            <version>${inject.resources.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.adelean</groupId>
             <artifactId>inject-resources-junit-jupiter</artifactId>
-            <version>0.1.0</version>
+            <version>${inject.resources.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -72,7 +90,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>2.4.3</version>
+                <version>${spring.version}</version>
                 <configuration>
                     <skip>true</skip>
                 </configuration>
@@ -80,10 +98,16 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.plugin.version}</version>
                 <configuration>
-                    <source>11</source>
-                    <target>11</target>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven.surefire.plugin.version}</version>
             </plugin>
         </plugins>
     </build>

@@ -9,15 +9,18 @@ import org.ta4j.core.BarSeries;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
 public class DataCollector {
 
     private final GenericJsonSerializer jsonSerializer = new GenericJsonSerializer();
+    private final ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(10);
 
     @Test
     void collectMarketData() throws IOException {
 
-        BarSeriesProviderImpl testee = new BarSeriesProviderImpl();
+        BarSeriesProviderImpl testee = new BarSeriesProviderImpl(executor);
         BarSeries resultETHBTC = testee.getBarSeries(MarketPair.ETH_BTC, TimeInterval.FIVE_MINUTE, 144);
         BarSeries resultDOTBTC = testee.getBarSeries(MarketPair.DOT_BTC, TimeInterval.FIVE_MINUTE, 144);
         BarSeries resultADABTC = testee.getBarSeries(MarketPair.ADA_BTC, TimeInterval.FIVE_MINUTE, 144);

@@ -10,8 +10,6 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>adapter-binance</artifactId>
     <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
         <binance.api.version>60eebc2e95d884d15a4f1f4c71c3fc9b4fcd6ea9</binance.api.version>
     </properties>
     <repositories>

@@ -1,10 +1,13 @@
 package de.y3om11.algotrading.adapter.binance;
 
 import com.binance.api.client.BinanceApiClientFactory;
-import com.binance.api.client.BinanceApiWebSocketClient;
 import de.y3om11.algotrader.domain.constants.MarketPair;
 import de.y3om11.algotrader.domain.constants.TimeInterval;
 import de.y3om11.algotrader.domain.gateway.BarSeriesProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.ta4j.core.*;
 import org.ta4j.core.num.PrecisionNum;
 
@@ -14,22 +17,28 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
+@Component
 public class BarSeriesProviderImpl implements BarSeriesProvider {
 
-    final Map<MarketPair, BarSeries> barSeriesMap = new ConcurrentHashMap<>();
-    final Map<MarketPair, Long> closeTimeCache = new ConcurrentHashMap<>();
-    final ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(10);
+    final static Logger log = LoggerFactory.getLogger(BarSeriesProviderImpl.class);
+    private final Map<MarketPair, BarSeries> barSeriesMap = new ConcurrentHashMap<>();
+    private final Map<MarketPair, Long> closeTimeCache = new ConcurrentHashMap<>();
+    private final ThreadPoolExecutor executor;
+
+    @Autowired
+    public BarSeriesProviderImpl(final ThreadPoolExecutor executor) {
+        this.executor = executor;
+    }
 
     @Override
     public BarSeries getBarSeries(final MarketPair marketPair, final TimeInterval timeInterval, final int maxBarCount) {
 
         if(barSeriesMap.containsKey(marketPair)) return barSeriesMap.get(marketPair);
 
-        final List<Bar> barList = new ArrayList<>();
-        final BaseBarSeries baseBarSeries = new BaseBarSeriesBuilder()
+        final var barList = new ArrayList<Bar>();
+        final var baseBarSeries = new BaseBarSeriesBuilder()
                 .withBars(barList)
                 .withMaxBarCount(maxBarCount)
                 .withName(MarketPairMapper.map(marketPair))
@@ -37,10 +46,10 @@ public class BarSeriesProviderImpl implements BarSeriesProvider {
         barSeriesMap.put(marketPair, baseBarSeries);
 
         executor.submit(() -> {
-            final BinanceApiWebSocketClient client = BinanceApiClientFactory.newInstance().newWebSocketClient();
+            final var client = BinanceApiClientFactory.newInstance().newWebSocketClient();
             client.onCandlestickEvent(MarketPairMapper.map(marketPair), TimeIntervalMapper.map(timeInterval), response -> {
                 try {
-                    final BaseBar bar = BaseBar.builder()
+                    final var bar = BaseBar.builder()
                             .openPrice(PrecisionNum.valueOf(response.getOpen()))
                             .closePrice(PrecisionNum.valueOf(response.getClose()))
                             .highPrice(PrecisionNum.valueOf(response.getHigh()))
@@ -60,9 +69,8 @@ public class BarSeriesProviderImpl implements BarSeriesProvider {
                         baseBarSeries.addBar(bar);
                         closeTimeCache.put(marketPair, response.getCloseTime());
                     }
-
                 } catch (RuntimeException e){
-                    System.out.println(e.getMessage());
+                    log.error(e.getMessage());
                 }
             });
         });

@@ -10,8 +10,6 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>domain</artifactId>
     <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
         <ta4j.version>0.13</ta4j.version>
     </properties>
     <dependencies>

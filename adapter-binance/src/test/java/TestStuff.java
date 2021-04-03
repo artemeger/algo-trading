@@ -12,8 +12,12 @@ import org.ta4j.core.BaseBar;
 import org.ta4j.core.num.PrecisionNum;
 
 import java.time.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
 public class TestStuff {
+
+    private final ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(10);
 
     @Test
     @Disabled
@@ -45,7 +49,7 @@ public class TestStuff {
     @Test
     @Disabled
     void test2() throws InterruptedException {
-        BarSeriesProviderImpl testee = new BarSeriesProviderImpl();
+        BarSeriesProviderImpl testee = new BarSeriesProviderImpl(executor);
         BarSeries resultETH = testee.getBarSeries(MarketPair.ETH_BTC, TimeInterval.ONE_MINUTE, 1000);
         BarSeries resultADA = testee.getBarSeries(MarketPair.ADA_BTC, TimeInterval.ONE_MINUTE, 1000);
         BarSeries resultDOT = testee.getBarSeries(MarketPair.DOT_BTC, TimeInterval.ONE_MINUTE, 1000);
