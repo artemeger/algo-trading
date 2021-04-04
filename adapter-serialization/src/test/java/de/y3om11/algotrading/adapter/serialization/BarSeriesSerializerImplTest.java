@@ -2,7 +2,7 @@ package de.y3om11.algotrading.adapter.serialization;
 
 import com.adelean.inject.resources.junit.jupiter.GivenTextResource;
 import com.adelean.inject.resources.junit.jupiter.TestWithResources;
-import de.y3om11.algotrader.domain.gateway.BarSeriesSerializer;
+import de.y3om11.algotrading.domain.gateway.BarSeriesSerializer;
 import org.junit.jupiter.api.Test;
 import org.ta4j.core.BarSeries;
 import java.util.Optional;

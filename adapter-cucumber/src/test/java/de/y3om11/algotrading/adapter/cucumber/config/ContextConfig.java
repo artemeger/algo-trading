@@ -1,6 +1,6 @@
 package de.y3om11.algotrading.adapter.cucumber.config;
 
-import de.y3om11.algotrader.domain.gateway.BarSeriesSerializer;
+import de.y3om11.algotrading.domain.gateway.BarSeriesSerializer;
 import de.y3om11.algotrading.adapter.serialization.BarSeriesSerializerImpl;
 import org.springframework.beans.factory.config.CustomScopeConfigurer;
 import org.springframework.context.annotation.Bean;

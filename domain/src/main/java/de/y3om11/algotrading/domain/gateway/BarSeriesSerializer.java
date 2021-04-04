@@ -1,4 +1,4 @@
-package de.y3om11.algotrader.domain.gateway;
+package de.y3om11.algotrading.domain.gateway;
 
 import org.ta4j.core.BarSeries;
 

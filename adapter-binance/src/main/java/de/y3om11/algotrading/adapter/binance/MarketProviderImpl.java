@@ -1,13 +1,14 @@
 package de.y3om11.algotrading.adapter.binance;
 
 import com.binance.api.client.BinanceApiClientFactory;
-import de.y3om11.algotrader.domain.constants.MarketPair;
-import de.y3om11.algotrader.domain.constants.TimeInterval;
-import de.y3om11.algotrader.domain.gateway.BarSeriesProvider;
+import de.y3om11.algotrading.domain.constants.MarketPair;
+import de.y3om11.algotrading.domain.constants.TimeInterval;
+import de.y3om11.algotrading.domain.gateway.MarketProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 import org.ta4j.core.*;
 import org.ta4j.core.num.PrecisionNum;
 
@@ -19,16 +20,18 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadPoolExecutor;
 
-@Component
-public class BarSeriesProviderImpl implements BarSeriesProvider {
+import static java.lang.String.format;
 
-    final static Logger log = LoggerFactory.getLogger(BarSeriesProviderImpl.class);
+@Service
+public class MarketProviderImpl implements MarketProvider {
+
+    final static Logger log = LoggerFactory.getLogger(MarketProviderImpl.class);
     private final Map<MarketPair, BarSeries> barSeriesMap = new ConcurrentHashMap<>();
     private final Map<MarketPair, Long> closeTimeCache = new ConcurrentHashMap<>();
     private final ThreadPoolExecutor executor;
 
     @Autowired
-    public BarSeriesProviderImpl(final ThreadPoolExecutor executor) {
+    public MarketProviderImpl(@Qualifier("threadPoolExecutor") final ThreadPoolExecutor executor) {
         this.executor = executor;
     }
 
@@ -68,6 +71,7 @@ public class BarSeriesProviderImpl implements BarSeriesProvider {
                     } else {
                         baseBarSeries.addBar(bar);
                         closeTimeCache.put(marketPair, response.getCloseTime());
+                        log.info(format("Adding new Bar %s for Pair %s", bar, marketPair));
                     }
                 } catch (RuntimeException e){
                     log.error(e.getMessage());

@@ -1,9 +1,6 @@
 package de.y3om11.algotrading.adapter.binance;
 
-import de.y3om11.algotrader.domain.constants.MarketPair;
-import de.y3om11.algotrader.domain.exception.AlgotradingTechnicalException;
-
-import static java.lang.String.format;
+import de.y3om11.algotrading.domain.constants.MarketPair;
 
 public final class MarketPairMapper {
 

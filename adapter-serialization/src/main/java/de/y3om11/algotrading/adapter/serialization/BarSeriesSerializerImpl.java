@@ -1,6 +1,6 @@
 package de.y3om11.algotrading.adapter.serialization;
 
-import de.y3om11.algotrader.domain.gateway.BarSeriesSerializer;
+import de.y3om11.algotrading.domain.gateway.BarSeriesSerializer;
 import org.ta4j.core.*;
 
 import java.io.IOException;

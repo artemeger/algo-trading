@@ -1,8 +1,7 @@
 package de.y3om11.algotrading.adapter.binance;
 
 import com.binance.api.client.domain.market.CandlestickInterval;
-import de.y3om11.algotrader.domain.constants.TimeInterval;
-import de.y3om11.algotrader.domain.exception.AlgotradingTechnicalException;
+import de.y3om11.algotrading.domain.constants.TimeInterval;
 
 import static java.lang.String.format;
 

@@ -1,6 +1,6 @@
 package de.y3om11.algotrading.adapter.cucumber.mock;
 
-import de.y3om11.algotrader.domain.gateway.BarSeriesSerializer;
+import de.y3om11.algotrading.domain.gateway.BarSeriesSerializer;
 import de.y3om11.algotrading.adapter.cucumber.enums.TestMarkets;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

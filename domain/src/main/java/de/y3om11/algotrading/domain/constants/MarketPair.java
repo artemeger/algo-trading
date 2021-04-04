@@ -1,4 +1,4 @@
-package de.y3om11.algotrader.domain.constants;
+package de.y3om11.algotrading.domain.constants;
 
 public enum MarketPair {
 

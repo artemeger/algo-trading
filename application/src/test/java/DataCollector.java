@@ -1,6 +1,6 @@
-import de.y3om11.algotrader.domain.constants.MarketPair;
-import de.y3om11.algotrader.domain.constants.TimeInterval;
-import de.y3om11.algotrading.adapter.binance.BarSeriesProviderImpl;
+import de.y3om11.algotrading.domain.constants.MarketPair;
+import de.y3om11.algotrading.domain.constants.TimeInterval;
+import de.y3om11.algotrading.adapter.binance.MarketProviderImpl;
 import de.y3om11.algotrading.adapter.serialization.GenericJsonSerializer;
 import org.junit.jupiter.api.Test;
 import org.ta4j.core.Bar;
@@ -20,7 +20,7 @@ public class DataCollector {
     @Test
     void collectMarketData() throws IOException {
 
-        BarSeriesProviderImpl testee = new BarSeriesProviderImpl(executor);
+        MarketProviderImpl testee = new MarketProviderImpl(executor);
         BarSeries resultETHBTC = testee.getBarSeries(MarketPair.ETH_BTC, TimeInterval.FIVE_MINUTE, 144);
         BarSeries resultDOTBTC = testee.getBarSeries(MarketPair.DOT_BTC, TimeInterval.FIVE_MINUTE, 144);
         BarSeries resultADABTC = testee.getBarSeries(MarketPair.ADA_BTC, TimeInterval.FIVE_MINUTE, 144);

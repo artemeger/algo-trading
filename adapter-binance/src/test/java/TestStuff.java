@@ -2,9 +2,9 @@ import com.binance.api.client.BinanceApiClientFactory;
 import com.binance.api.client.BinanceApiWebSocketClient;
 
 import com.binance.api.client.domain.market.CandlestickInterval;
-import de.y3om11.algotrader.domain.constants.MarketPair;
-import de.y3om11.algotrader.domain.constants.TimeInterval;
-import de.y3om11.algotrading.adapter.binance.BarSeriesProviderImpl;
+import de.y3om11.algotrading.domain.constants.MarketPair;
+import de.y3om11.algotrading.domain.constants.TimeInterval;
+import de.y3om11.algotrading.adapter.binance.MarketProviderImpl;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.ta4j.core.BarSeries;
@@ -49,7 +49,7 @@ public class TestStuff {
     @Test
     @Disabled
     void test2() throws InterruptedException {
-        BarSeriesProviderImpl testee = new BarSeriesProviderImpl(executor);
+        MarketProviderImpl testee = new MarketProviderImpl(executor);
         BarSeries resultETH = testee.getBarSeries(MarketPair.ETH_BTC, TimeInterval.ONE_MINUTE, 1000);
         BarSeries resultADA = testee.getBarSeries(MarketPair.ADA_BTC, TimeInterval.ONE_MINUTE, 1000);
         BarSeries resultDOT = testee.getBarSeries(MarketPair.DOT_BTC, TimeInterval.ONE_MINUTE, 1000);
