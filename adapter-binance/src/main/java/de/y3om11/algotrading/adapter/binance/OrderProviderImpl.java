@@ -15,7 +15,7 @@ public class OrderProviderImpl implements OrderProvider {
     final static Logger log = LoggerFactory.getLogger(OrderProviderImpl.class);
 
     @Override
-    public boolean executeOrder(final Order.OrderType orderType, final Num amount, final Num price) {
+    public boolean executeOrder(final Order.OrderType orderType, final Num price, final Num amount) {
         log.info(format("Execute Order with type %s. Amount: %s - Price: %s", orderType.name(), amount, price));
         return true;
     }

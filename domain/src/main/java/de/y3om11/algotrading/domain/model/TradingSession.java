@@ -50,13 +50,17 @@ public class TradingSession implements Runnable {
             var currentPrice = barSeries.getLastBar().getClosePrice();
             if (enterTradeIsPossible()) {
                 boolean successEntry = orderProvider.executeOrder(Order.OrderType.BUY, currentPrice, amountPerOrder);
-                if (successEntry) tradingRecord.enter(barSeries.getEndIndex(), currentPrice, amountPerOrder);
-                log.info(format("%s - New Entry Order executed: %s", name, tradingRecord.getLastEntry()));
+                if (successEntry) {
+                    tradingRecord.enter(barSeries.getEndIndex(), currentPrice, amountPerOrder);
+                    log.info(format("%s - New Entry Order executed: %s", name, tradingRecord.getLastEntry()));
+                }
             } else if (exitTradeIsPossible()) {
                 boolean successExit = orderProvider.executeOrder(Order.OrderType.SELL, currentPrice, amountPerOrder);
-                if (successExit) tradingRecord.exit(barSeries.getEndIndex(), currentPrice, amountPerOrder);
-                log.info(format("%s - New Exit Order executed: %s", name, tradingRecord.getLastExit()));
-                log.info(format("%s - Profit: %s", name, tradingRecord.getCurrentTrade().getProfit()));
+                if (successExit) {
+                    tradingRecord.exit(barSeries.getEndIndex(), currentPrice, amountPerOrder);
+                    log.info(format("%s - New Exit Order executed: %s with Profit %s", name,
+                            tradingRecord.getLastExit(), tradingRecord.getCurrentTrade().getProfit()));
+                }
             }
         }
     }
