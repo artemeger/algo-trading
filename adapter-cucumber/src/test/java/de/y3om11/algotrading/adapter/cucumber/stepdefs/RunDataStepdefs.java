@@ -36,6 +36,7 @@ public class RunDataStepdefs extends SpringContextTest {
         var sortedTrades = tradingRecord.getTrades().stream()
                 .sorted(Comparator.comparingDouble(t -> t.getProfit().doubleValue()))
                 .collect(Collectors.toList());
+
         var worst10Trades = sortedTrades.subList(0, 10);
         var best10Trades = sortedTrades.subList(sortedTrades.size() - 10, sortedTrades.size());
         Collections.reverse(best10Trades);
@@ -47,18 +48,18 @@ public class RunDataStepdefs extends SpringContextTest {
         System.out.println(":: Total profit " +  profitLossPercentage);
         System.out.println(":: ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ");
         System.out.println("::               BEST 10 TRADES                   ");
-        printTrades(best10Trades);
+        printTrades(best10Trades, testData.barSeries);
         System.out.println(":: ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ");
         System.out.println("::               WORST 10 TRADES                  ");
-        printTrades(worst10Trades);
+        printTrades(worst10Trades, testData.barSeries);
         System.out.println("::::::::::::::::::::::::::::::::::::::::::::::::::::");
     }
 
-    private void printTrades(final List<Trade> trades){
+    private void printTrades(final List<Trade> trades, final BarSeries barSeries){
         var df = new DecimalFormat("#########.#########");
-        trades.forEach(t -> System.out.printf(":: Entry %s  Exit %s  Fee %s  Profit %s%n",
-                df.format(t.getEntry().getPricePerAsset().doubleValue()),
-                df.format(t.getExit().getPricePerAsset().doubleValue()),
+        trades.forEach(t -> System.out.printf(":: Entry %s (%s)  Exit %s (%s)  Fee %s  Profit %s%n",
+                df.format(t.getEntry().getPricePerAsset().doubleValue()), barSeries.getBar(t.getExit().getIndex()).getEndTime(),
+                df.format(t.getExit().getPricePerAsset().doubleValue()), barSeries.getBar(t.getEntry().getIndex()).getEndTime(),
                 df.format(t.getTradeCost().doubleValue()),
                 df.format(t.getProfit().doubleValue())));
     }

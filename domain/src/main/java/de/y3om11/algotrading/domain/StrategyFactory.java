@@ -5,6 +5,7 @@ import org.ta4j.core.BaseStrategy;
 import org.ta4j.core.Rule;
 import org.ta4j.core.Strategy;
 import org.ta4j.core.indicators.*;
+import org.ta4j.core.indicators.adx.ADXIndicator;
 import org.ta4j.core.indicators.candles.BullishEngulfingIndicator;
 import org.ta4j.core.indicators.helpers.*;
 import org.ta4j.core.num.DoubleNum;
@@ -63,6 +64,36 @@ public class StrategyFactory {
                         .and(swingRule);
 
                 final var exitRule = (stopLoss.or(stopGain));
+                yield new BaseStrategy(entryRule, exitRule, 50);
+            }
+            case "TripleEMACrossWithADX" -> {
+                final var closePrice = new ClosePriceIndicator(barSeries);
+                final var ema3 = new EMAIndicator(closePrice, 3);
+                final var ema25 = new EMAIndicator(closePrice, 25);
+                final var ema50 = new EMAIndicator(closePrice, 50);
+                final var rsi3 = new RSIIndicator(closePrice, 3);
+                final var adx = new ADXIndicator(barSeries, 25);
+
+                final var ema25UnderEma50 = new UnderIndicatorRule(ema25, ema50);
+                final var ema3CrossedOverEma50 = new CrossedUpIndicatorRule(ema3, ema50);
+                final var ema3CrossedOverEma25 = new OverIndicatorRule(ema3, ema25);
+                final var rsi3CrossedOver75 = new CrossedUpIndicatorRule(rsi3, 85);
+                final var adxOver20 = new OverIndicatorRule(adx, 25);
+
+                final var bar = barSeries.getLastBar();
+                final var differenceShort = getPercentageDiff(bar.getClosePrice(), bar.getLowPrice());
+                final var stopLoss = new StopLossRule(closePrice, differenceShort);
+                final var stopEmaLoss = new CrossedDownIndicatorRule(closePrice, ema50);
+
+                final var entryRule = ema25UnderEma50
+                        .and(ema3CrossedOverEma50)
+                        .and(adxOver20)
+                        .and(ema3CrossedOverEma25);
+
+                final var exitRule = stopLoss
+                        .or(stopEmaLoss)
+                        .or(rsi3CrossedOver75);
+
                 yield new BaseStrategy(entryRule, exitRule, 50);
             }
             default -> throw new IllegalStateException("Unexpected value: " + strategy);
