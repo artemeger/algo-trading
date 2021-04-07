@@ -9,6 +9,12 @@ import org.ta4j.core.analysis.criteria.AverageProfitableTradesCriterion;
 import org.ta4j.core.analysis.criteria.ProfitLossPercentageCriterion;
 import org.ta4j.core.num.DoubleNum;
 
+import java.text.DecimalFormat;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class RunDataStepdefs extends SpringContextTest {
 
     @Autowired
@@ -27,11 +33,33 @@ public class RunDataStepdefs extends SpringContextTest {
         var averageProfitableTradesCriterion = new AverageProfitableTradesCriterion();
         var averageProfitableTrades = averageProfitableTradesCriterion.calculate(testData.barSeries, tradingRecord);
 
+        var sortedTrades = tradingRecord.getTrades().stream()
+                .sorted(Comparator.comparingDouble(t -> t.getProfit().doubleValue()))
+                .collect(Collectors.toList());
+        var worst10Trades = sortedTrades.subList(0, 10);
+        var best10Trades = sortedTrades.subList(sortedTrades.size() - 10, sortedTrades.size());
+        Collections.reverse(best10Trades);
+
         System.out.println("::::::::::::::::::::::::::::::::::::::::::::::::::::");
         System.out.println(":: [[ Strategy " +  name +" ]]");
         System.out.println(":: Total trades " +  tradingRecord.getTradeCount());
         System.out.println(":: Profitable " +  averageProfitableTrades.multipliedBy(DoubleNum.valueOf(100)) + " %");
         System.out.println(":: Total profit " +  profitLossPercentage);
+        System.out.println(":: ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ");
+        System.out.println("::               BEST 10 TRADES                   ");
+        printTrades(best10Trades);
+        System.out.println(":: ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ");
+        System.out.println("::               WORST 10 TRADES                  ");
+        printTrades(worst10Trades);
         System.out.println("::::::::::::::::::::::::::::::::::::::::::::::::::::");
+    }
+
+    private void printTrades(final List<Trade> trades){
+        var df = new DecimalFormat("#########.#########");
+        trades.forEach(t -> System.out.printf(":: Entry %s  Exit %s  Fee %s  Profit %s%n",
+                df.format(t.getEntry().getPricePerAsset().doubleValue()),
+                df.format(t.getExit().getPricePerAsset().doubleValue()),
+                df.format(t.getTradeCost().doubleValue()),
+                df.format(t.getProfit().doubleValue())));
     }
 }

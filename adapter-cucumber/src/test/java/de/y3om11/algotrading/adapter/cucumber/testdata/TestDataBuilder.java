@@ -48,9 +48,16 @@ public class TestDataBuilder {
         barSeries = barSeriesProvider.getBarSeries(market, fromDate, toDate);
     }
 
-    public void addRangeRule(final String name, final String rule, final String cachedIndicator,
-                        final String priceIndicator, final int range){
+    public void addRangeRule(final String name, final String rule,
+                             final String cachedIndicator, final String priceIndicator,
+                             final int range){
         ruleMap.put(name, getRangeRuleFromString(rule, cachedIndicator, priceIndicator, range));
+    }
+
+    public void addIndicatorRule(final String name, final String rule, final String priceIndicator,
+                                 final String cachedIndicator1, final int range1,
+                                 final String cachedIndicator2, final int range2){
+        ruleMap.put(name, getIndicatorRuleFromString(rule, priceIndicator, cachedIndicator1, range1, cachedIndicator2, range2));
     }
 
     public void addBooleanRule(final String name, final String rule){
@@ -158,6 +165,26 @@ public class TestDataBuilder {
                     (getCachedRangeIndicatorFromString(cachedIndicator, priceIndicator, range), threshold);
             case "CROSSED_OVER" -> new CrossedUpIndicatorRule
                     (getCachedRangeIndicatorFromString(cachedIndicator, priceIndicator, range), threshold);
+            default -> throw new IllegalStateException("Unexpected value: " + priceIndicator);
+        };
+    }
+
+    private Rule getIndicatorRuleFromString(final String rule, final String priceIndicator,
+                                            final String cachedIndicator1, final int range1,
+                                            final String cachedIndicator2, final int range2){
+        return switch(rule){
+            case "UNDER" -> new UnderIndicatorRule(getCachedRangeIndicatorFromString
+                    (cachedIndicator1, priceIndicator, range1), getCachedRangeIndicatorFromString
+                    (cachedIndicator2, priceIndicator, range2));
+            case "OVER" -> new OverIndicatorRule(getCachedRangeIndicatorFromString
+                    (cachedIndicator1, priceIndicator, range1), getCachedRangeIndicatorFromString
+                    (cachedIndicator2, priceIndicator, range2));
+            case "CROSSED_UNDER" -> new CrossedUpIndicatorRule(getCachedRangeIndicatorFromString
+                    (cachedIndicator1, priceIndicator, range1), getCachedRangeIndicatorFromString
+                    (cachedIndicator2, priceIndicator, range2));
+            case "CROSSED_OVER" -> new CrossedDownIndicatorRule(getCachedRangeIndicatorFromString
+                    (cachedIndicator1, priceIndicator, range1), getCachedRangeIndicatorFromString
+                    (cachedIndicator2, priceIndicator, range2));
             default -> throw new IllegalStateException("Unexpected value: " + priceIndicator);
         };
     }

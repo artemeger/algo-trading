@@ -27,3 +27,23 @@ Feature: First Test
     Given For "EMA9RSIScalp" the transactional cost is 0.1% and the holding cost is 0%
     When The Strategy "EMA9RSIScalp" gets executed we get the stats printed
 
+  Scenario: RSI2 Strategy
+
+    Given We define a new indicator Rule called "Sma5_Over_Sma200" of type "OVER" using "CLOSE" price and a "SMA" Indicator with range 5 and a "SMA" Indicator with range 200
+    Given We define a new threshold Rule called "Rsi2_CrossedUnder_5" of type "CROSSED_UNDER" using "CLOSE" price and a "RSI" Indicator with range 5 and a threshold of 40
+    Given We define a new range Rule called "ClosePrice_Over_Sma5" of type "OVER" using "CLOSE" price and a "SMA" Indicator with range 5
+
+    Given We define a new indicator Rule called "Sma5_Under_Sma200" of type "UNDER" using "CLOSE" price and a "SMA" Indicator with range 5 and a "SMA" Indicator with range 200
+    Given We define a new threshold Rule called "Rsi2_CrossedOver_5" of type "CROSSED_OVER" using "CLOSE" price and a "RSI" Indicator with range 5 and a threshold of 60
+    Given We define a new range Rule called "ClosePrice_Under_Sma5" of type "UNDER" using "CLOSE" price and a "SMA" Indicator with range 5
+
+    Given We define a new stop loss Rule called "Stop_Loss" allowing 0.5% slippage
+
+    Given We merge the rules "Sma5_Over_Sma200:Rsi2_CrossedUnder_5:ClosePrice_Over_Sma5" to a new rule called "entryRule" using the "AND" operator
+    Given We merge the rules "Sma5_Under_Sma200:Rsi2_CrossedOver_5:ClosePrice_Under_Sma5" to a new rule called "exitRule" using the "AND" operator
+    Given We merge the rules "exitRule:Stop_Loss" to a new rule called "exitWithStopLoss" using the "OR" operator
+
+    Given We build a Strategy called "RSI2" with a delay of 200 ticks using "entryRule" to enter and "exitWithStopLoss" to exit the trade
+    Given For "RSI2" we buy with an token order size of 0.001
+    Given For "RSI2" the transactional cost is 0.1% and the holding cost is 0%
+    When The Strategy "RSI2" gets executed we get the stats printed

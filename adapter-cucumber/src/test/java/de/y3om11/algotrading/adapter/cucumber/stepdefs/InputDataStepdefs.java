@@ -34,7 +34,14 @@ public class InputDataStepdefs extends SpringContextTest {
         testDataBuilder.addRangeRule(ruleName, ruleType, cachedIndicator, priceIndicator, range);
     }
 
-    @Given("We define a new threshold Rule called {string} of type {string} using {string} price and a {string} Indicator with range {int} and a threshold of {double}")
+    @Given("We define a new indicator Rule called {string} of type {string} using {string} price and a {string} Indicator with range {int} and a {string} Indicator with range {int}")
+    public void defineRule(final String ruleName, final String ruleType, final String priceIndicator,
+                           final String cachedIndicator1, final int range1,
+                           final String cachedIndicator2, final int range2) {
+        testDataBuilder.addIndicatorRule(ruleName, ruleType, priceIndicator, cachedIndicator1, range1, cachedIndicator2, range2);
+    }
+
+        @Given("We define a new threshold Rule called {string} of type {string} using {string} price and a {string} Indicator with range {int} and a threshold of {double}")
     public void defineRule(final String ruleName, final String ruleType, final String priceIndicator,
                            final String cachedIndicator, final int range, final double threshold){
         testDataBuilder.addThresholdRule(ruleName, ruleType, cachedIndicator, priceIndicator, range, threshold);
