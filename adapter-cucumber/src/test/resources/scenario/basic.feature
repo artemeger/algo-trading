@@ -1,13 +1,13 @@
 Feature: First Test
 
   Background:
-    Given Candlesticks for Market ETH_USDT from "01-12-2020 10:00" to "01-02-2021 10:00"
+    Given Candlesticks for Market BTC_USDT from "01-12-2020 10:00" to "01-02-2021 10:00"
 
   Scenario: Prebuild TripleEMACrossWithADX Strategy
-    Given We use the prebuild Strategy "TripleEMACrossWithADX"
-    Given For "TripleEMACrossWithADX" we buy with an token order size of 1
-    Given For "TripleEMACrossWithADX" the transactional cost is 0.1% and the holding cost is 0%
-    When The Strategy "TripleEMACrossWithADX" gets executed we get the stats printed
+    Given We use the prebuild Strategy "Test"
+    Given For "Test" we buy with an token order size of 0.1
+    Given For "Test" the transactional cost is 0.1% and the holding cost is 0%
+    When The Strategy "Test" gets executed we get the stats printed
 
   Scenario: EMA9RSIScalp Strategy
 

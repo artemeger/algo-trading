@@ -6,8 +6,16 @@ import org.ta4j.core.Rule;
 import org.ta4j.core.Strategy;
 import org.ta4j.core.indicators.*;
 import org.ta4j.core.indicators.adx.ADXIndicator;
+import org.ta4j.core.indicators.bollinger.BollingerBandWidthIndicator;
+import org.ta4j.core.indicators.bollinger.BollingerBandsLowerIndicator;
+import org.ta4j.core.indicators.bollinger.BollingerBandsMiddleIndicator;
+import org.ta4j.core.indicators.bollinger.BollingerBandsUpperIndicator;
 import org.ta4j.core.indicators.candles.BullishEngulfingIndicator;
 import org.ta4j.core.indicators.helpers.*;
+import org.ta4j.core.indicators.pivotpoints.FibonacciReversalIndicator;
+import org.ta4j.core.indicators.pivotpoints.PivotPointIndicator;
+import org.ta4j.core.indicators.pivotpoints.TimeLevel;
+import org.ta4j.core.indicators.statistics.StandardDeviationIndicator;
 import org.ta4j.core.num.DoubleNum;
 import org.ta4j.core.num.Num;
 import org.ta4j.core.trading.rules.*;
@@ -95,6 +103,40 @@ public class StrategyFactory {
                         .or(rsi3CrossedOver75);
 
                 yield new BaseStrategy(entryRule, exitRule, 50);
+            } case "Test" -> {
+                final var closePrice = new ClosePriceIndicator(barSeries);
+
+                final var stochK = new StochasticOscillatorKIndicator(barSeries, 12);
+                final var stochD = new StochasticOscillatorDIndicator(stochK);
+
+                final var sma3 = new SMAIndicator(closePrice, 3);
+                final var bollingerMid = new BollingerBandsMiddleIndicator(sma3);
+                final var standartDev = new StandardDeviationIndicator(closePrice, 16);
+                final var bollingerUpper = new BollingerBandsUpperIndicator(bollingerMid, standartDev);
+
+                final var adx = new ADXIndicator(barSeries, 16);
+
+                final var priceCrossedOverMid = new CrossedUpIndicatorRule(closePrice, bollingerMid);
+                final var bullishStochMove = previousCrossOverTwoIndicators(stochK, stochD, 0, 3);
+                final var adxOver20 = new OverIndicatorRule(adx, 20);
+                final var closePriceOverUpper = new OverIndicatorRule(closePrice, bollingerUpper);
+
+                final var bar = barSeries.getLastBar();
+                final var differenceShort = getPercentageDiff(bar.getClosePrice(), bar.getLowPrice());
+                final var stopLoss = new StopLossRule(closePrice, differenceShort);
+
+                final var volumeNow = new VolumeIndicator(barSeries, 4);
+                final var volumePast = new PreviousValueIndicator(volumeNow, 8);
+                final var volumeIncreasing = new OverIndicatorRule(volumeNow, volumePast);
+
+                final var entryRule = priceCrossedOverMid
+                        .and(bullishStochMove)
+                        .and(volumeIncreasing)
+                        .and(adxOver20);
+
+                final var exitRule = closePriceOverUpper
+                        .or(stopLoss);
+                yield new BaseStrategy(entryRule, exitRule, 20);
             }
             default -> throw new IllegalStateException("Unexpected value: " + strategy);
         };
@@ -124,6 +166,20 @@ public class StrategyFactory {
             result.add(rule);
         }
         return result.stream().reduce(Rule::or);
+    }
+
+    private static Rule previousCrossOverTwoIndicators(final CachedIndicator<Num> cachedIndicatorUp, final CachedIndicator<Num> cachedIndicatorDown,
+                                              final int rangeFrom, final int rangeTo){
+        final var result = new ArrayList<Rule>();
+        for(int index = rangeFrom; index <= rangeTo; index++){
+            final var prevIndicatorUp = new PreviousValueIndicator(cachedIndicatorUp, index);
+            final var prevIndicatorDown = new PreviousValueIndicator(cachedIndicatorDown, index);
+            final var prevCrossedOver = new CrossedUpIndicatorRule(prevIndicatorUp, prevIndicatorDown);
+            result.add(prevCrossedOver);
+        }
+        return result.stream()
+                .reduce(Rule::or)
+                .orElse(null);
     }
 
     private static Num getPercentageDiff(final Num value, final Num delta){

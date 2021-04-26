@@ -10,6 +10,7 @@ import org.ta4j.core.analysis.criteria.ProfitLossPercentageCriterion;
 import org.ta4j.core.num.DoubleNum;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -37,8 +38,12 @@ public class RunDataStepdefs extends SpringContextTest {
                 .sorted(Comparator.comparingDouble(t -> t.getProfit().doubleValue()))
                 .collect(Collectors.toList());
 
-        var worst10Trades = sortedTrades.subList(0, 10);
-        var best10Trades = sortedTrades.subList(sortedTrades.size() - 10, sortedTrades.size());
+        final List<Trade> worst10Trades = sortedTrades.size() > 10 ?
+                sortedTrades.subList(0, 10) :
+                new ArrayList<>();
+        final List<Trade> best10Trades = sortedTrades.size() > 10 ?
+                sortedTrades.subList(sortedTrades.size() - 10, sortedTrades.size()):
+                new ArrayList<>();
         Collections.reverse(best10Trades);
 
         System.out.println("::::::::::::::::::::::::::::::::::::::::::::::::::::");
